@@ -79,15 +79,7 @@ args=(
   -device vmware-svga
 
   # SPICE display server on localhost with port forwarding to LAN
-  -spice port="$SPICE_PORT",addr=127.0.0.1,disable-ticketing=on
+  -spice port="$SPICE_PORT",addr=0.0.0.0,disable-ticketing=on
 )
-
-# Port forwarding for SSH
-sudo iptables -t nat -A PREROUTING -p tcp --dport "$SSH_PORT" -j DNAT --to-destination 127.0.0.1:"$SSH_PORT"
-sudo iptables -t nat -A POSTROUTING -p tcp -d 127.0.0.1 --dport "$SSH_PORT" -j MASQUERADE
-
-# Port forwarding for SPICE
-sudo iptables -t nat -A PREROUTING -p tcp --dport "$SPICE_PORT" -j DNAT --to-destination 127.0.0.1:"$SPICE_PORT"
-sudo iptables -t nat -A POSTROUTING -p tcp -d 127.0.0.1 --dport "$SPICE_PORT" -j MASQUERADE
 
 qemu-system-x86_64 "${args[@]}"
