@@ -124,3 +124,36 @@ sudo systemctl start xrdp
 # Restart the system - to apply all changes
 sudo reboot
 ```
+
+### Install kvm
+
+```bash
+sudo apt install qemu-kvm
+
+# Set kvm configuration - Intel CPU
+sudo bash -c 'cat > /etc/modprobe.d/kvm.conf << EOF
+options kvm_intel nested=1
+options kvm_intel emulate_invalid_guest_state=0
+options kvm ignore_msrs=1 report_ignored_msrs=0
+EOF'
+
+# Add current user to kvm and input groups
+sudo usermod -aG kvm $(whoami)
+sudo usermod -aG input $(whoami)
+
+# Check groups
+groups $(whoami)
+
+# Reboot the system to apply the changes
+sudo reboot
+
+cd /workspace/oc_hackintosh
+
+./oc_boot.sh spag_oc.qcow2 spag_ventura.img --ventura
+
+sudo apt install remmina remmina-plugin-spice
+
+# Add macOS VM to Remmina
+# localhost macpro
+# 127.0.0.1:5900
+```
