@@ -11,8 +11,13 @@ if [ "$#" -lt 2 ]; then
     exit 1
 fi
 
-BOOTLOADER="$1"
-MAC_HDD="$2"
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Set bootloader and macOS disk image with paths relative to the script directory
+BOOTLOADER="$SCRIPT_DIR/$1"
+MAC_HDD="$SCRIPT_DIR/$2"
+OVMF_CODE="$SCRIPT_DIR/OVMF_CODE.fd"
 
 # Default to 2222 if not provided
 SSH_PORT="${3:-2222}"       
@@ -56,7 +61,7 @@ args=(
   -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
 
   # EFI Boot files
-  -drive if=pflash,format=raw,readonly=on,file="./OVMF_CODE.fd"
+  -drive if=pflash,format=raw,readonly=on,file="$OVMF_CODE"
 
   -smbios type=2
 
