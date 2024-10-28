@@ -149,7 +149,7 @@ sudo reboot
 
 cd /workspace/oc_hackintosh
 
-./oc_boot.sh spag_oc.qcow2 spag_ventura.img --ventura
+./oc_boot.sh spag_oc.qcow2 spag_ventura.img 2222 5900 --ventura
 
 sudo apt install remmina remmina-plugin-spice
 
