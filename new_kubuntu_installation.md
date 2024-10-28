@@ -157,3 +157,17 @@ sudo apt install remmina remmina-plugin-spice
 # localhost macpro
 # 127.0.0.1:5900
 ```
+
+### Install VM Services - run automatically on boot
+
+```bash
+sudo cp ./spag_ventura.service /etc/systemd/system/
+
+sudo systemctl daemon-reload
+
+sudo systemctl enable spag_ventura
+
+sudo systemctl start spag_ventura
+
+sudo systemctl status spag_ventura
+```
