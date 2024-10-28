@@ -29,7 +29,7 @@ SPICE_PORT="${4:-5900}"
 OPTIONAL_PARAM="${5:-}"     
 
 MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
-ALLOCATED_RAM="32768" # MiB
+ALLOCATED_RAM="16384" # MiB
 CPU_SOCKETS="1"
 CPU_CORES="4"
 CPU_THREADS="8"

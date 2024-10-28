@@ -1,0 +1,17 @@
+[Unit]
+Description=OpenCore Boot Service
+After=network.target
+
+[Service]
+User=spag
+Group=spag
+
+# Command to start the VM
+ExecStart=/workspace/oc_hackintosh/oc_boot.sh dste_oc.qcow2 dste_sonoma.img 2223 5901
+
+# Automatically restart if the service stops
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
