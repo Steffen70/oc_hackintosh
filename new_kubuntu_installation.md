@@ -6,6 +6,7 @@
 -   Create new GPT partition table
 -   Map /boot/efi to new fat32 partition (100MiB - add more if you intend to dual boot) - set boot flag
 -   Map / to new ext4 partition (rest of the disk)
+-   Install minimal installation
 
 ### Manual configuration
 
@@ -56,4 +57,70 @@ sudo extrepo enable librewolf
 sudo apt update
 
 sudo apt install librewolf
+```
+
+### Enable ssh
+
+```bash
+sudo apt install openssh-server
+
+sudo systemctl enable ssh
+
+sudo systemctl start ssh
+
+sudo systemctl status ssh
+
+# Check ip address
+sudo apt install net-tools
+
+ifconfig
+
+# Test connection from another machine
+ssh $user_name@$ip_address
+
+# Create a workspace directory
+sudo mkdir /workspace
+sudo chmod 777 /workspace
+exit # Exit the ssh session
+
+# Copy the entire oc_hackintosh directory to the workspace directory
+scp -r /workspace/oc_hackintosh spag@172.20.2.115:/workspace/
+```
+
+### Install xRDP
+
+```bash
+sudo apt install xrdp
+
+# Configure xRDP
+sudo nano /etc/xrdp/sesman.ini
+
+# Change settings in [Sessions] section
+# MaxSessions=2
+# KillDisconnected=true
+# DisconnectedTimeLimit=60
+
+# Add rule to allow network manager - else it will show a password prompt on every xRDP login
+sudo bash -c 'cat > /etc/polkit-1/rules.d/10-allow-network-manager.rules << EOF
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.NetworkManager.network-control" &&
+        subject.isInGroup("sudo")) {
+        return polkit.Result.YES;
+    }
+});
+EOF'
+
+# Restart polkit
+sudo systemctl restart polkit
+
+# Skip the grub selection screen (/etc/default/grub should already have GRUB_TIMEOUT=0)
+# Uncomment GRUB_DISABLE_OS_PROBER and set to `true` - else 30_os-prober will override GRUB_TIMEOUT=0 with GRUB_TIMEOUT=10
+sudo nano /etc/default/grub
+sudo update-grup
+
+sudo systemctl enable xrdp
+sudo systemctl start xrdp
+
+# Restart the system - to apply all changes
+sudo reboot
 ```
